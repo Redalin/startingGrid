@@ -6,8 +6,12 @@
 
 #define NUM_LEDS 40
 #define DATA_PIN 2
+#define START_PIN 3
 CRGB leds[NUM_LEDS];
 int brightness = 82;
+int car1Laptimes[6]
+int car2Laptimes[6]
+int car3Laptimes[6]
 
 // For mirroring strips, all the "special" stuff happens just in setup.  We
 // just addLeds multiple times, once for each strip
@@ -16,18 +20,14 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 }
 
-void loop() {
-  LEDS.setBrightness(brightness);
-  // limit my draw to 1A at 5v of power draw
-  FastLED.setMaxPowerInVoltsAndMilliamps(5,1000); 
-  
+void startSequence() {
   for(int i = 0; i < NUM_LEDS-1; i++) {
     // set all leds to red
     leds[i] = CRGB::Red;
     FastLED.show();
     delay(5);
   }
-  
+
   // now bring in the orange from each end
   for(int i = 0; i < NUM_LEDS/2+2; i=i+2) {
     // set our current dot to orange
@@ -52,4 +52,29 @@ void loop() {
   }
   
   delay(500);
+
+}
+
+void showLapCounters(car1, car2, car3) {
+  #define LED_START
+  #define LED_END
+  
+  // all lap displays should have the same number of LEDs, therefore we can divide the number by 3
+  int numLedsPerCar = (LED_END - LED_START / 3)
+  int car1Leds = 
+}
+
+void loop() {
+  LEDS.setBrightness(brightness);
+  // limit my draw to 1A at 5v of power draw
+  FastLED.setMaxPowerInVoltsAndMilliamps(5,1000); 
+  if (START_PIN) {
+    // If somebody presses the start button - begin the countdown sequence
+    startSequence();
+  }
+
+  // Read the values from the sensors to count laps for each car
+  // start the lap timers for the 3 cars and display their number of laps
+  showLapCounters(car1Laptimes.length, car2Laptimes.length, car3Laptimes.length);
+  
 }
