@@ -4,7 +4,6 @@
 // MirroringSample - see https://github.com/FastLED/FastLED/wiki/Multiple-Controller-Examples for more info on
 // using multiple controllers.  In this example, we're going to set up four NEOPIXEL strips on four
 // different pins, and show the same thing on all four of them, a simple bouncing dot/cyclon type pattern
-//http://cdn.arduined.eu/wp-content/uploads/2015/03/CH340-windows-8-driver.png
 // tamiya lap timer project:
 // http://www.instructables.com/id/Lap-Timer-Mini-4WD-IR-Sensor-/
 
@@ -28,23 +27,26 @@ int car3Laps = 0;
 void setup() {
   // limit power draw to 1A at 5v of power draw
   FastLED.setMaxPowerInVoltsAndMilliamps(5,1000); 
-  pinMode(DATA_PIN, OUTPUT);  // declare the ledPin as an OUTPUT
-  pinMode(START_PIN, INPUT);  // declare the StartPin as an INPUT
+  pinMode(DATA_PIN, OUTPUT);  // declare the DATA_PIN as an OUTPUT
+  pinMode(START_PIN, INPUT);  // declare the StartPin as an INPUT - this is for the pushbutton
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 }
 
 void startSequence() {
   for(int i = 0; i < NUM_LEDS; i++) {
-    // set all leds to red
+    // set all leds to Orange
     leds[i] = CRGB::Orange;
   }
   FastLED.show();
   delay(10000);
 
-  // now turn them off in 5 stages
+  // Wait 10 sec and turn them off in stages
   int blockSize = 4;
   for(int i = 0; i < NUM_LEDS; i++) {
+    // Turn every LED red
     leds[i] = CRGB::Red;
+    
+    // Only show them if we're going to show a whole light block
     int x = (i + 1) % blockSize;
     if (x == 0) {
       FastLED.show();
@@ -52,17 +54,16 @@ void startSequence() {
     }
   }
   
-  // pause a random time between 1 and 3 seconds
+  // pause for effect - a random time between 1.5 and 2.5 seconds
   delay(random(1500, 2500));
     
-   // now turn them all green
+   // now GO!! Turn them all green
    for(int i = 0; i < NUM_LEDS; i++) {
     // set current dot to green
     leds[i] = CRGB::Green;
     FastLED.show();
   }
-
-  // Done. Now start timing laps  
+  // Done.
 }
 
 
@@ -79,16 +80,10 @@ void startSequence() {
 */
 
 void loop() {
-  LEDS.setBrightness(brightness);
-  startSequence();
-  delay(5000);
-  
-
-  
-  //if (digitalRead(START_PIN)) {
+  if (digitalRead(START_PIN)) {
     // If somebody presses the start button - begin the countdown sequence
-  //  startSequence();
-  //}
+    startSequence();
+  }
 
   // Read the values from the sensors to count laps for each car
   // start the lap timers for the 3 cars and display their number of laps
