@@ -11,8 +11,8 @@
 #include "FastLED.h"
 
 #define NUM_LEDS 20
-#define DATA_PIN 2
-#define START_PIN 3
+#define DATA_PIN 13
+#define START_PIN 6
 CRGB leds[NUM_LEDS];
 int brightness = 255;
 int car1Laptimes[6];
@@ -66,6 +66,14 @@ void startSequence() {
   // Done.
 }
 
+void clearBoard() {
+  for(int i = 0; i < NUM_LEDS; i++) {
+    // set all leds to Off/black
+    leds[i] = CRGB::Black;
+  }
+  FastLED.show();
+  delay(500);
+}
 
 /*void showLapCounters() {
   #define LED_START
@@ -85,6 +93,11 @@ void loop() {
     startSequence();
   }
 
+  if (digitalRead(START_PIN)) {
+    // Now somebody presses the start button - turn the lights off
+    clearBoard();
+  }
+  
   // Read the values from the sensors to count laps for each car
   // start the lap timers for the 3 cars and display their number of laps
   
