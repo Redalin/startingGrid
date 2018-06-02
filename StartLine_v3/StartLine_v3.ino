@@ -1,16 +1,4 @@
-//#include <FastIO.h>
-//#include <I2CIO.h>
-//#include <LCD.h>
-//#include <LiquidCrystal.h>
 #include <LiquidCrystal_I2C.h>
-//#include <LiquidCrystal_I2C_ByVac.h>
-//#include <LiquidCrystal_SI2C.h>
-//#include <LiquidCrystal_SR.h>
-//#include <LiquidCrystal_SR1W.h>
-//#include <LiquidCrystal_SR2W.h>
-//#include <LiquidCrystal_SR3W.h>
-//#include <SI2CIO.h>
-//#include <SoftI2CMaster.h>
 
 // Adafruit NeoPixel - Version: Latest 
 #include <Adafruit_NeoPixel.h>
@@ -21,15 +9,13 @@
 // tamiya lap timer project:
 // http://www.instructables.com/id/Lap-Timer-Mini-4WD-IR-Sensor-/
 
-
 #include "FastLED.h"
-
 
 #define NUM_LEDS 20
 #define DATA_PIN 13
 #define START_PIN 6
 CRGB leds[NUM_LEDS];
-int brightness = 255;
+int brightness = 100;
 int car1Laptimes[6];
 int car2Laptimes[6];
 int car3Laptimes[6];
@@ -52,7 +38,7 @@ void setup() {
   pinMode(DATA_PIN, OUTPUT);  // declare the DATA_PIN as an OUTPUT
   pinMode(START_PIN, INPUT);  // declare the StartPin as an INPUT - this is for the pushbutton
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-
+  FastLED.setBrightness(brightness);
   lcd.begin(16,2);   // initialize the lcd for 16 chars 2 lines, turn on backlight
   // ------- Quick 3 blinks of backlight  -------------
   for(int i = 0; i< 3; i++)
@@ -74,7 +60,7 @@ void startSequence() {
     leds[i] = CRGB::Orange;
   }
   FastLED.show();
-  delay(10000);
+  delay(5000);
 
   // Wait 10 sec and turn them off in stages
   int blockSize = 4;
@@ -88,12 +74,12 @@ void startSequence() {
     int x = (i + 1) % blockSize;
     if (x == 0) {
       FastLED.show();
-      delay(1000);
+      delay(900);
     }
   }
   
   // pause for effect - a random time between 1.5 and 2.5 seconds
-  delay(random(1500, 2500));
+  delay(random(900, 1500));
   lcd.clear();
   lcd.setCursor(2,0); 
   lcd.print("GO! GO! GO!"); 
